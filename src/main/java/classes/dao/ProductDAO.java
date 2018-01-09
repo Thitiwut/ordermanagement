@@ -8,12 +8,12 @@ import java.sql.SQLException;
 public interface ProductDAO {
     boolean InsertProduct(String product_name, String product_type) throws NamingException, SQLException;
 
-    boolean DeleteProduct();
+    boolean DeleteProduct(int product_id) throws NamingException, SQLException;
 
-    boolean UpdateProduct();
+    boolean UpdateProduct(int product_id, String new_product_name) throws NamingException, SQLException;
 
-    Product GetProductByName(String product_name);
+    Product GetProductByName(String product_name) throws NamingException, SQLException;
 
-    Product GetProductByID(int product_id);
+    Product GetProductByID(int product_id) throws NamingException, SQLException;
 
 }
