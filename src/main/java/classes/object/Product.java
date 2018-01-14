@@ -5,21 +5,24 @@ public class Product {
     private String product_name;
     private String product_type;
     private String package_component;
+    private String product_number;
 
     public Product(){
 
     }
 
-    public Product(int product_id, String product_name, String product_type, String package_component) {
+    public Product(int product_id, String product_name, String product_number, String product_type, String package_component) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.product_number = product_number;
         this.product_type = product_type;
         this.package_component = package_component;
     }
 
-    public Product(int product_id, String product_name, String product_type) {
+    public Product(int product_id, String product_name, String product_number, String product_type) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.product_number = product_number;
         this.product_type = product_type;
     }
 
@@ -53,5 +56,13 @@ public class Product {
 
     public void setPackage_component(String package_component) {
         this.package_component = package_component;
+    }
+
+    public String getProduct_number() {
+        return product_number;
+    }
+
+    public void setProduct_number(String product_number) {
+        this.product_number = product_number;
     }
 }

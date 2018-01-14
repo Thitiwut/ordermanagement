@@ -4,6 +4,7 @@ import classes.object.Product;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface ProductDAO {
     boolean InsertProduct(String product_name, String product_type) throws NamingException, SQLException;
@@ -16,4 +17,5 @@ public interface ProductDAO {
 
     Product GetProductByID(int product_id) throws NamingException, SQLException;
 
+    ArrayList GetAllProduct() throws NamingException, SQLException;
 }

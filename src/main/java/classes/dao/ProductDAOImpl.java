@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ProductDAOImpl implements ProductDAO{
     public boolean InsertProduct(String product_name, String product_type) throws NamingException,SQLException {
@@ -51,6 +52,7 @@ public class ProductDAOImpl implements ProductDAO{
         Product product = new Product();
         product.setProduct_id(rs.getInt("product_id"));
         product.setProduct_name(rs.getString("product_name"));
+        product.setProduct_number(rs.getString("product_number"));
         product.setProduct_type(rs.getString("product_type"));
         product.setPackage_component(rs.getString("package_component"));
         return product;
@@ -65,8 +67,28 @@ public class ProductDAOImpl implements ProductDAO{
         Product product = new Product();
         product.setProduct_id(rs.getInt("product_id"));
         product.setProduct_name(rs.getString("product_name"));
+        product.setProduct_number(rs.getString("product_number"));
         product.setProduct_type(rs.getString("product_type"));
         product.setPackage_component(rs.getString("package_component"));
         return product;
+    }
+
+    public ArrayList<Product> GetAllProduct() throws NamingException, SQLException{
+        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
+        Connection connection = datasource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE id");
+        ResultSet rs = statement.executeQuery();
+
+        ArrayList product_list = new ArrayList<Product>();
+        while(rs.next()){
+            Product product = new Product();
+            product.setProduct_id(rs.getInt("product_id"));
+            product.setProduct_name(rs.getString("product_name"));
+            product.setProduct_number(rs.getString("product_number"));
+            product.setProduct_type(rs.getString("product_type"));
+            product.setPackage_component(rs.getString("package_component"));
+            product_list.add(product);
+        }
+        return product_list;
     }
 }

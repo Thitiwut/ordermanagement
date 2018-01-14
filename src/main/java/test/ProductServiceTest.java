@@ -7,7 +7,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -86,6 +88,14 @@ class ProductServiceTest {
     }
 
     @Test
+    void EditProductNotSuccessDuplicatedName(){
+        ProductService productService = new ProductService();
+        productService.setProductDAO(new MockProductDAO());
+        String result = productService.EditProduct(1, "Duplicate");
+        assertEquals("Duplicate", result);
+    }
+
+    @Test
     void EditProductNotSuccessUnhandledInternalError(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
@@ -99,6 +109,15 @@ class ProductServiceTest {
         productService.setProductDAO(new MockProductDAO());
         String result = productService.EditProduct(1, "CAUSE_SQLERROR");
         assertEquals("SQL_Error", result);
+    }
+
+    @Test
+    void GetProductListSuccess(){
+        ProductService productService = new ProductService();
+        productService.setProductDAO(new MockProductDAO());
+        String json_string = productService.GetProductList();
+        String expected_json_string = "[{\"product_id\":1,\"product_name\":\"ส้มสายน้ำผึ้ง#84\",\"product_type\":\"Regular\",\"product_number\":\"175474\"},{\"product_id\":2,\"product_name\":\"ส้มสายน้ำผึ้ง#72\",\"product_type\":\"Regular\",\"product_number\":\"175474\"},{\"product_id\":3,\"product_name\":\"ส้มสายน้ำผึ้ง#105\",\"product_type\":\"Regular\",\"product_number\":\"175474\"}]";
+        assertEquals(expected_json_string, json_string);
     }
 
 
@@ -158,6 +177,14 @@ class ProductServiceTest {
 
         public Product GetProductByID(int product_id) {
             return null;
+        }
+
+        public ArrayList GetAllProduct() throws NamingException, SQLException {
+            ArrayList product_list = new ArrayList<Product>();
+            product_list.add(new Product(1, "ส้มสายน้ำผึ้ง#84", "175474", "Regular"));
+            product_list.add(new Product(2, "ส้มสายน้ำผึ้ง#72", "175474", "Regular"));
+            product_list.add(new Product(3, "ส้มสายน้ำผึ้ง#105", "175474", "Regular"));
+            return product_list;
         }
     }
 }
