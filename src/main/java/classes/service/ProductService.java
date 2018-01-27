@@ -4,8 +4,11 @@ import classes.dao.ProductDAO;
 import classes.dao.ProductDAOImpl;
 import classes.object.Product;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 
 import javax.naming.NamingException;
+import java.lang.reflect.Modifier;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -16,13 +19,13 @@ public class ProductService {
         this.productDAO = productDAO;
     }
 
-    public String AddNewProduct(String product_name, String product_type) {
+    public String AddNewProduct(String product_name, String product_type, int supplier_id, double price) {
         try {
             Product product = productDAO.GetProductByName(product_name);
             if (product != null) {
                 return "Duplicate";
             }
-            if (productDAO.InsertProduct(product_name, product_type)) {
+            if (productDAO.InsertProduct(product_name, product_type, supplier_id, price)) {
                 return "Success";
             } else return "Failed";
         }catch (SQLException e){
@@ -66,9 +69,9 @@ public class ProductService {
         }
     }
 
-    public String GetProductList() {
+    public String GetProductList(int supplier_id) {
         try {
-            ArrayList product_list = productDAO.GetAllProduct();
+            ArrayList product_list = productDAO.GetAllProduct(supplier_id);
             Gson gson = new Gson();
             String json_string = gson.toJson(product_list);
             return json_string;

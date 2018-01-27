@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProductDAOImpl implements ProductDAO{
-    public boolean InsertProduct(String product_name, String product_type) throws NamingException,SQLException {
+    public boolean InsertProduct(String product_name, String product_type, int supplier_id, double price) throws NamingException,SQLException {
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         if(product_name != null && product_type != null){
@@ -48,6 +48,7 @@ public class ProductDAOImpl implements ProductDAO{
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE name");
         ResultSet rs = statement.executeQuery();
+        rs.next();
 
         Product product = new Product();
         product.setProduct_id(rs.getInt("product_id"));
@@ -63,6 +64,7 @@ public class ProductDAOImpl implements ProductDAO{
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE id");
         ResultSet rs = statement.executeQuery();
+        rs.next();
 
         Product product = new Product();
         product.setProduct_id(rs.getInt("product_id"));
@@ -70,10 +72,11 @@ public class ProductDAOImpl implements ProductDAO{
         product.setProduct_number(rs.getString("product_number"));
         product.setProduct_type(rs.getString("product_type"));
         product.setPackage_component(rs.getString("package_component"));
+        product.setPrice(rs.getDouble("price"));
         return product;
     }
 
-    public ArrayList<Product> GetAllProduct() throws NamingException, SQLException{
+    public ArrayList<Product> GetAllProduct(int supplier_id) throws NamingException, SQLException{
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE id");
@@ -87,6 +90,7 @@ public class ProductDAOImpl implements ProductDAO{
             product.setProduct_number(rs.getString("product_number"));
             product.setProduct_type(rs.getString("product_type"));
             product.setPackage_component(rs.getString("package_component"));
+            product.setPrice(rs.getDouble("price"));
             product_list.add(product);
         }
         return product_list;

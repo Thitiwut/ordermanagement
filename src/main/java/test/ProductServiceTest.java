@@ -27,7 +27,7 @@ class ProductServiceTest {
     void AddNewProductSuccess(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("Apple", "Regular");
+        String result = productService.AddNewProduct("Apple", "Regular", 1, 100.00);
         assertEquals("Success", result);
     }
 
@@ -35,7 +35,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessDuplicatedName(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("Duplicate", "Regular");
+        String result = productService.AddNewProduct("Duplicate", "Regular", 1, 100.00);
         assertEquals("Duplicate", result);
     }
 
@@ -43,7 +43,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessUnhandledInternalError(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("CAUSE_ERROR", "Regular");
+        String result = productService.AddNewProduct("CAUSE_ERROR", "Regular", 1, 100.00);
         assertEquals("Internal_Error", result);
     }
 
@@ -51,7 +51,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessUnhandledSQLError(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("CAUSE_SQLERROR", "Regular");
+        String result = productService.AddNewProduct("CAUSE_SQLERROR", "Regular", 1, 100.00);
         assertEquals("SQL_Error", result);
     }
 
@@ -115,8 +115,8 @@ class ProductServiceTest {
     void GetProductListSuccess(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String json_string = productService.GetProductList();
-        String expected_json_string = "[{\"product_id\":1,\"product_name\":\"ส้มสายน้ำผึ้ง#84\",\"product_type\":\"Regular\",\"product_number\":\"175474\"},{\"product_id\":2,\"product_name\":\"ส้มสายน้ำผึ้ง#72\",\"product_type\":\"Regular\",\"product_number\":\"175474\"},{\"product_id\":3,\"product_name\":\"ส้มสายน้ำผึ้ง#105\",\"product_type\":\"Regular\",\"product_number\":\"175474\"}]";
+        String json_string = productService.GetProductList(1);
+        String expected_json_string = "[{\"product_id\":1,\"product_name\":\"ส้มสายน้ำผึ้ง#84\",\"product_type\":\"Regular\",\"product_number\":\"175474\",\"product_price\":100.0},{\"product_id\":2,\"product_name\":\"ส้มสายน้ำผึ้ง#72\",\"product_type\":\"Regular\",\"product_number\":\"175474\",\"product_price\":100.0},{\"product_id\":3,\"product_name\":\"ส้มสายน้ำผึ้ง#105\",\"product_type\":\"Regular\",\"product_number\":\"175474\",\"product_price\":100.0}]";
         assertEquals(expected_json_string, json_string);
     }
 
@@ -124,7 +124,7 @@ class ProductServiceTest {
     /* Mock Object */
     private class MockProductDAO implements ProductDAO{
 
-        public boolean InsertProduct(String product_name, String product_type) throws SQLException{
+        public boolean InsertProduct(String product_name, String product_type, int supplier_id, double price) throws SQLException{
             if(product_name == "CAUSE_ERROR"){
                 int[] test_array = null;
                 int test_value = test_array[1] + test_array[1];
@@ -179,11 +179,11 @@ class ProductServiceTest {
             return null;
         }
 
-        public ArrayList GetAllProduct() throws NamingException, SQLException {
+        public ArrayList GetAllProduct(int supplier_id) throws NamingException, SQLException {
             ArrayList product_list = new ArrayList<Product>();
-            product_list.add(new Product(1, "ส้มสายน้ำผึ้ง#84", "175474", "Regular"));
-            product_list.add(new Product(2, "ส้มสายน้ำผึ้ง#72", "175474", "Regular"));
-            product_list.add(new Product(3, "ส้มสายน้ำผึ้ง#105", "175474", "Regular"));
+            product_list.add(new Product(1, "ส้มสายน้ำผึ้ง#84", "175474", "Regular", 100.00));
+            product_list.add(new Product(2, "ส้มสายน้ำผึ้ง#72", "175474", "Regular", 100.00));
+            product_list.add(new Product(3, "ส้มสายน้ำผึ้ง#105", "175474", "Regular",100.00));
             return product_list;
         }
     }
