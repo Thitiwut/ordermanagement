@@ -1,5 +1,6 @@
 package test;
 
+import classes.dao.PricingDAO;
 import classes.dao.ProductDAO;
 import classes.object.Product;
 import classes.service.ProductService;
@@ -120,6 +121,14 @@ class ProductServiceTest {
         assertEquals(expected_json_string, json_string);
     }
 
+    @Test
+    void SetNewProductPriceSuccess(){
+        ProductService productService = new ProductService();
+        productService.setPriceDAO(new MockPriceDAO());
+        String result = productService.SetNewProductPrice(1, 1, "11/12/2018", 100.00);
+        assertEquals("Success", result);
+    }
+
 
     /* Mock Object */
     private class MockProductDAO implements ProductDAO{
@@ -185,6 +194,24 @@ class ProductServiceTest {
             product_list.add(new Product(2, "ส้มสายน้ำผึ้ง#72", "175474", "Regular", 100.00));
             product_list.add(new Product(3, "ส้มสายน้ำผึ้ง#105", "175474", "Regular",100.00));
             return product_list;
+        }
+    }
+
+    private class MockPriceDAO implements PricingDAO{
+        public boolean InsertPrice(int product_id, int supplier_id, String active_date, double price) throws NamingException, SQLException {
+            if(active_date == "CAUSE_ERROR"){
+                int[] test_array = null;
+                int test_value = test_array[1] + test_array[1];
+                return false;
+            }
+
+            if(active_date == "CAUSE_SQLERROR") throw new SQLException();
+
+            if(active_date != null){
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -1,5 +1,7 @@
 package classes.service;
 
+import classes.dao.PricingDAO;
+import classes.dao.PricingDAOImpl;
 import classes.dao.ProductDAO;
 import classes.dao.ProductDAOImpl;
 import classes.object.Product;
@@ -14,10 +16,13 @@ import java.util.ArrayList;
 
 public class ProductService {
     private ProductDAO productDAO = new ProductDAOImpl();
+    private PricingDAO pricingDAO = new PricingDAOImpl();
 
     public void setProductDAO(ProductDAO productDAO) {
         this.productDAO = productDAO;
     }
+
+    public void setPriceDAO(PricingDAO pricingDAO) {this.pricingDAO = pricingDAO; }
 
     public String AddNewProduct(String product_name, String product_type, int supplier_id, double price) {
         try {
@@ -82,5 +87,20 @@ public class ProductService {
             e.printStackTrace();
             return "Internal_Error";
         }
+    }
+
+    public String SetNewProductPrice(int product_id, int supplier_id, String active_date, double price) {
+        try {
+            if(pricingDAO.InsertPrice(product_id, supplier_id, active_date, price)){
+                return "Success";
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            return "SQL_Error";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Internal_Error";
+        }
+        return "Failed";
     }
 }
