@@ -5,18 +5,21 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class POProductDAOImpl implements POProductDAO{
 
-    public boolean InsertPOProduct(int product_id, int po_id, Double order_amount, double order_price) throws NamingException, SQLException {
+    public int InsertPOProduct(int product_id, int po_id, Double order_amount, double order_price) throws NamingException, SQLException {
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
 
         PreparedStatement statement = connection.prepareStatement("INSERT  XXXXXXXXXXXXXXXX");
         statement.executeQuery();
+        ResultSet rs = statement.getGeneratedKeys();
+        rs.next();
         connection.close();
-        return true;
+        return rs.getInt(1);
     }
 
     public boolean DeletePOProduct(int po_product_id) throws NamingException, SQLException {

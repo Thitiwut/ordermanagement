@@ -30,22 +30,22 @@ public class PurchaseOrderService {
 
     public String AddNewPurchaseOrder(int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) {
         try {
-            if(purchaseOrderDAO.InsertPurchaseOrder(supplier_id, customer_branch_id, order_date, expect_delivery_date, status)){
-                return "Success";
-            }
+            int insertedKey = purchaseOrderDAO.InsertPurchaseOrder(supplier_id, customer_branch_id, order_date, expect_delivery_date, status);
+            if(insertedKey != 0){
+                return "{\"status\":\"Success\",\"inserted_id\":\""+insertedKey+"\",\"action\":\"new_purchase_order\"}";
+            }else return "{\"status\":\"Failed\",\"action\":\"new_purchase_order\"}";
         }catch (SQLException e){
             e.printStackTrace();
-            return "SQL_Error";
+            return "{\"status\":\"SQL_Error\",\"action\":\"new_purchase_order\"}";
         }catch (Exception e){
             e.printStackTrace();
-            return "Internal_Error";
+            return "{\"status\":\"Internal_Error\",\"action\":\"new_purchase_order\"}";
         }
-        return "Failed";
     }
 
-    public String EditPurchaseOrder(String po_number, int supplier_id, int customer_branch_id, String expect_delivery_date){
+    public String EditPurchaseOrder(int po_id, int supplier_id, int customer_branch_id, String expect_delivery_date){
         try {
-            if(purchaseOrderDAO.UpdatePurchaseOrder(po_number, supplier_id, customer_branch_id, expect_delivery_date)) {
+            if(purchaseOrderDAO.UpdatePurchaseOrder(po_id, supplier_id, customer_branch_id, expect_delivery_date)) {
                 return "Success";
             }
         }catch (SQLException e){
@@ -95,17 +95,17 @@ public class PurchaseOrderService {
 
     public String AddProductToPurchaseOrder(int product_id, int po_id, Double order_amount, double order_price) {
         try {
-            if(poProductDAO.InsertPOProduct(product_id, po_id, order_amount, order_price)){
-                return "Success";
-            }
+            int insertedKey = poProductDAO.InsertPOProduct(product_id, po_id, order_amount, order_price);
+            if(insertedKey != 0){
+                return "{\"status\":\"Success\",\"inserted_id\":\""+insertedKey+"\",\"action\":\"add_purchase_order_product\"}";
+            }else return "{\"status\":\"Failed\",\"action\":\"add_purchase_order_product\"}";
         }catch (SQLException e){
             e.printStackTrace();
-            return "SQL_Error";
+            return "{\"status\":\"SQL_Error\",\"action\":\"add_purchase_order_product\"}";
         }catch (Exception e){
             e.printStackTrace();
-            return "Internal_Error";
+            return "{\"status\":\"Internal_Error\",\"action\":\"add_purchase_order_product\"}";
         }
-        return "Failed";
     }
 
     public String CancelPurchaseOrder(int po_id) {
@@ -138,9 +138,9 @@ public class PurchaseOrderService {
         return "Failed";
     }
 
-    public String EnterUOBDocument(String fax_date, String payee, String paid_date, int uob_number, String remark) {
+    public String EnterUOBDocument(String fax_date, String payee, String paid_date, int uob_number, String remark, String po_number) {
         try {
-            if(uobDAO.InsertUOB(fax_date, payee, paid_date, uob_number, remark)){
+            if(uobDAO.InsertUOB(fax_date, payee, paid_date, uob_number, remark, po_number)){
                 return "Success";
             }
         }catch (SQLException e){

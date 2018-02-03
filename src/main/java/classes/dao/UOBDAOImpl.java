@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UOBDAOImpl implements UOBDAO {
-    public boolean InsertUOB(String fax_date, String payee, String paid_date, int uob_number, String remark) throws NamingException, SQLException {
+    public boolean InsertUOB(String fax_date, String payee, String paid_date, int uob_number, String remark, String po_number) throws NamingException, SQLException {
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         if(fax_date != null && payee != null && paid_date != null){

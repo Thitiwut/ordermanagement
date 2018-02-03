@@ -15,22 +15,24 @@ import java.util.ArrayList;
 
 public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
 
-    public boolean InsertPurchaseOrder(int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws NamingException, SQLException {
+    public int InsertPurchaseOrder(int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws NamingException, SQLException {
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         if(order_date != null && expect_delivery_date != null && status != null){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO XXXXXXXXXXXXXXXX");
             statement.executeQuery();
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
             connection.close();
-            return true;
-        }else return false;
+            return rs.getInt(1);
+        }else return 0;
     }
 
-    public boolean UpdatePurchaseOrder(String po_number, int supplier_id, int customer_branch_id, String expect_delivery_date) throws NamingException, SQLException {
+    public boolean UpdatePurchaseOrder(int po_number, int supplier_id, int customer_branch_id, String expect_delivery_date) throws NamingException, SQLException {
         DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
 
-        if(po_number != null && expect_delivery_date != null){
+        if(expect_delivery_date != null){
             PreparedStatement statement = connection.prepareStatement("UPDATE  XXXXXXXXXXXXXXXX"); //UPDATE PO Table
             statement.executeQuery();
             connection.close();
