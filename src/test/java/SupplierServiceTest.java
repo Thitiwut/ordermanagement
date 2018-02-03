@@ -1,5 +1,3 @@
-package test;
-
 import classes.dao.SupplierDAO;
 import classes.object.Supplier;
 import classes.service.SupplierService;

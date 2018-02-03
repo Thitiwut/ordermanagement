@@ -1,5 +1,3 @@
-package test;
-
 import classes.dao.POProductDAO;
 import classes.dao.PurchaseOrderDAO;
 import classes.dao.UOBDAO;

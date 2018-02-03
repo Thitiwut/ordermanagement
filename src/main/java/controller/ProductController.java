@@ -19,6 +19,7 @@ public class ProductController extends HttpServlet {
     protected void doPost(
             HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.print(postHandler(request));
     }
@@ -27,6 +28,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(
             HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.print(getHandler(request));
     }

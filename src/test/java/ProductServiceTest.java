@@ -1,5 +1,3 @@
-package test;
-
 import classes.dao.PricingDAO;
 import classes.dao.ProductDAO;
 import classes.object.Product;
