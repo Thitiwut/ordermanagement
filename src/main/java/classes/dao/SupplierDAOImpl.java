@@ -1,6 +1,6 @@
 package classes.dao;
 
-import classes.object.Supplier;
+import classes.model.Supplier;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -12,10 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SupplierDAOImpl implements SupplierDAO{
+
+    private static DataSource datasource;
+
+    public SupplierDAOImpl(DataSource datasource){
+        this.datasource = datasource ;
+    }
+
     public ArrayList<Supplier> GetAllSupplier() throws SQLException, NamingException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE id");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM OrderManagementDB.supplier;");
         ResultSet rs = statement.executeQuery();
 
         ArrayList supplier_list = new ArrayList<Supplier>();

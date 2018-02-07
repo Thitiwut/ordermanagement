@@ -10,27 +10,47 @@ import java.sql.SQLException;
 
 public class POProductDAOImpl implements POProductDAO{
 
+    private static DataSource datasource;
+
+    public POProductDAOImpl(DataSource datasource){
+        this.datasource = datasource ;
+    }
+
     public int InsertPOProduct(int product_id, int po_id, Double order_amount, double order_price) throws NamingException, SQLException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("INSERT  XXXXXXXXXXXXXXXX");
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO `OrderManagementDB`.`po_product` " +
+                "(`product_id`, `po_id`, `order_amount`, `order_price`) VALUES (?, ?, ?, ?);");
+        statement.setInt(1,product_id);
+        statement.setInt(2,po_id);
+        statement.setDouble(3,order_amount);
+        statement.setDouble(4,order_price);
         statement.executeQuery();
         ResultSet rs = statement.getGeneratedKeys();
         rs.next();
+        int inserted_key = rs.getInt(1);
         connection.close();
-        return rs.getInt(1);
+        return inserted_key;
     }
 
     public boolean DeletePOProduct(int po_product_id) throws NamingException, SQLException {
-        return false;
+        Connection connection = datasource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM `OrderManagementDB`.`po_product` WHERE `po_product_id`=?;");
+        statement.setInt(1,po_product_id);
+        statement.executeQuery();
+        connection.close();
+        return true;
     }
 
     public boolean UpdatePOProduct(int po_product_id, int new_product_id, Double order_amount, double order_price) throws NamingException, SQLException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("UPDATE  XXXXXXXXXXXXXXXX");
+        PreparedStatement statement = connection.prepareStatement("UPDATE `OrderManagementDB`.`po_product` " +
+                "SET `product_id`=?, `order_amount`=?, `order_price`=? WHERE `po_product_id`=?;");
+        statement.setInt(1,new_product_id);
+        statement.setDouble(2,order_amount);
+        statement.setDouble(3,order_price);
+        statement.setInt(4,po_product_id);
         statement.executeQuery();
         connection.close();
         return true;

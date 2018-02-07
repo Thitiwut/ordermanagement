@@ -4,19 +4,16 @@ import classes.dao.PricingDAO;
 import classes.dao.PricingDAOImpl;
 import classes.dao.ProductDAO;
 import classes.dao.ProductDAOImpl;
-import classes.object.Product;
+import classes.model.Product;
+import classes.object.DataSourceProvider;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 
-import javax.naming.NamingException;
-import java.lang.reflect.Modifier;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProductService {
-    private ProductDAO productDAO = new ProductDAOImpl();
-    private PricingDAO pricingDAO = new PricingDAOImpl();
+    private ProductDAO productDAO = new ProductDAOImpl(new DataSourceProvider().GetDataSource());
+    private PricingDAO pricingDAO = new PricingDAOImpl(new DataSourceProvider().GetDataSource());
 
     public void setProductDAO(ProductDAO productDAO) {
         this.productDAO = productDAO;

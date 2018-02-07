@@ -1,6 +1,6 @@
 import classes.dao.PricingDAO;
 import classes.dao.ProductDAO;
-import classes.object.Product;
+import classes.model.Product;
 import classes.service.ProductService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

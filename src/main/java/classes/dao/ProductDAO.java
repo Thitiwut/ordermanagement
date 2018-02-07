@@ -1,6 +1,6 @@
 package classes.dao;
 
-import classes.object.Product;
+import classes.model.Product;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;

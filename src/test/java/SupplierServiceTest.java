@@ -1,5 +1,5 @@
 import classes.dao.SupplierDAO;
-import classes.object.Supplier;
+import classes.model.Supplier;
 import classes.service.SupplierService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

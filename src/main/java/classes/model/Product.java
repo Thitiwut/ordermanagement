@@ -1,6 +1,4 @@
-package classes.object;
-
-import com.google.gson.annotations.Expose;
+package classes.model;
 
 public class Product {
     protected int product_id;

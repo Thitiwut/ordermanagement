@@ -1,6 +1,6 @@
 package classes.dao;
 
-import classes.object.UOB;
+import classes.model.UOB;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;

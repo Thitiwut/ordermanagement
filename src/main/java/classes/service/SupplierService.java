@@ -2,6 +2,7 @@ package classes.service;
 
 import classes.dao.SupplierDAO;
 import classes.dao.SupplierDAOImpl;
+import classes.object.DataSourceProvider;
 import com.google.gson.Gson;
 
 import javax.naming.NamingException;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SupplierService {
-    private SupplierDAO supplierDAO = new SupplierDAOImpl();
+    private SupplierDAO supplierDAO = new SupplierDAOImpl(new DataSourceProvider().GetDataSource());
 
     public void setSupplierDAO(SupplierDAO supplierDAO) {
         this.supplierDAO = supplierDAO;

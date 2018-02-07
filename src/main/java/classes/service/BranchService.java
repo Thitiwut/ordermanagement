@@ -2,13 +2,14 @@ package classes.service;
 
 import classes.dao.BranchDAO;
 import classes.dao.BranchDAOImpl;
+import classes.object.DataSourceProvider;
 import com.google.gson.Gson;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BranchService {
-    private BranchDAO branchDAO = new BranchDAOImpl();
+    private BranchDAO branchDAO = new BranchDAOImpl(new DataSourceProvider().GetDataSource());
 
     public void setBranchDAO(BranchDAO branchDAO) {
         this.branchDAO = branchDAO;

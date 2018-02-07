@@ -1,5 +1,5 @@
 import classes.dao.BranchDAO;
-import classes.object.Branch;
+import classes.model.Branch;
 import classes.service.BranchService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

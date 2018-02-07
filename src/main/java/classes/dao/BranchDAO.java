@@ -1,6 +1,6 @@
 package classes.dao;
 
-import classes.object.Branch;
+import classes.model.Branch;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;

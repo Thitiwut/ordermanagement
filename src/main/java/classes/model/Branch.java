@@ -1,4 +1,4 @@
-package classes.object;
+package classes.model;
 
 public class Branch{
     private int branch_id;

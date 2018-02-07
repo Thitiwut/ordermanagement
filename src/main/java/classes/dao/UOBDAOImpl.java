@@ -1,6 +1,6 @@
 package classes.dao;
 
-import classes.object.UOB;
+import classes.model.UOB;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -11,8 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UOBDAOImpl implements UOBDAO {
+
+    private static DataSource datasource;
+
+    public UOBDAOImpl(DataSource datasource){
+        this.datasource = datasource ;
+    }
+
     public boolean InsertUOB(String fax_date, String payee, String paid_date, int uob_number, String remark, String po_number) throws NamingException, SQLException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         if(fax_date != null && payee != null && paid_date != null){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO XXXXXXXXXXXXXXXX");
@@ -23,7 +29,6 @@ public class UOBDAOImpl implements UOBDAO {
     }
 
     public boolean UpdateUOB(String fax_date, String payee, String paid_date, int uob_number, String remark, String po_number) throws NamingException, SQLException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         if(fax_date != null && payee != null && paid_date != null){
             PreparedStatement statement = connection.prepareStatement("UPDATE INTO XXXXXXXXXXXXXXXX");
@@ -34,7 +39,6 @@ public class UOBDAOImpl implements UOBDAO {
     }
 
     public UOB GetUOB(String po_number) throws NamingException, SQLException {
-        DataSource datasource = (DataSource) new InitialContext().lookup("OrderManagementDB");
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT FROM XXXXXXXXXXXXXXXX WHERE name");
         ResultSet rs = statement.executeQuery();

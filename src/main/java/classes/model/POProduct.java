@@ -1,4 +1,4 @@
-package classes.object;
+package classes.model;
 
 public class POProduct extends Product {
     private int po_product_id;

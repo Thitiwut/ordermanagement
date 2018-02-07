@@ -1,20 +1,19 @@
 package classes.service;
 
 import classes.dao.*;
-import classes.object.Product;
-import classes.object.PurchaseOrder;
-import classes.object.UOB;
+import classes.model.Product;
+import classes.model.PurchaseOrder;
+import classes.model.UOB;
+import classes.object.DataSourceProvider;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PurchaseOrderService {
-    private PurchaseOrderDAO purchaseOrderDAO = new PurchaseOrderDAOImpl();
-    private POProductDAO poProductDAO = new POProductDAOImpl();
-    private UOBDAO uobDAO = new UOBDAOImpl();
+    private PurchaseOrderDAO purchaseOrderDAO = new PurchaseOrderDAOImpl(new DataSourceProvider().GetDataSource());
+    private POProductDAO poProductDAO = new POProductDAOImpl(new DataSourceProvider().GetDataSource());
+    private UOBDAO uobDAO = new UOBDAOImpl(new DataSourceProvider().GetDataSource());
 
     public void setPurchaseOrderDAO(PurchaseOrderDAO purchaseOrderDAO) {
         this.purchaseOrderDAO = purchaseOrderDAO;

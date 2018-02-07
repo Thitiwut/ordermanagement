@@ -1,10 +1,10 @@
 import classes.dao.POProductDAO;
 import classes.dao.PurchaseOrderDAO;
 import classes.dao.UOBDAO;
-import classes.object.POProduct;
-import classes.object.Product;
-import classes.object.PurchaseOrder;
-import classes.object.UOB;
+import classes.model.POProduct;
+import classes.model.Product;
+import classes.model.PurchaseOrder;
+import classes.model.UOB;
 import classes.service.PurchaseOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

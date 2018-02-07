@@ -1,7 +1,7 @@
 package classes.dao;
 
-import classes.object.Product;
-import classes.object.PurchaseOrder;
+import classes.model.Product;
+import classes.model.PurchaseOrder;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;

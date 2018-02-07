@@ -1,4 +1,4 @@
-package classes.object;
+package classes.model;
 
 public class Supplier {
     private int supplier_id;

@@ -86,7 +86,7 @@ public class PurchaseOrderController extends HttpServlet {
         String action = request.getParameter("action");
         String responseBody;
         switch (action) {
-            case "get_products":
+            case "get_purchase_order":
                 serviceResult = poService.GetPurchaseOrderByNumber(
                         request.getParameter("po_number"));
                 responseBody = serviceResult;

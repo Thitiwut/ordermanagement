@@ -1,4 +1,4 @@
-package classes.object;
+package classes.model;
 
 public class UOB {
     private int uob_id;
