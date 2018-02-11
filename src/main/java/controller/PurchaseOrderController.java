@@ -55,7 +55,7 @@ public class PurchaseOrderController extends HttpServlet {
                 return responseBody;
             case "cancel_purchase_order":
                 serviceResult = poService.CancelPurchaseOrder(
-                        Integer.parseInt(request.getParameter("product_id")));
+                        Integer.parseInt(request.getParameter("po_id")));
                 responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"cancel_purchase_order\"}";
                 return responseBody;
             case "edit_purchase_order":
