@@ -31,6 +31,7 @@ public class SupplierDAOImpl implements SupplierDAO{
             supplier.setSupplier_name(rs.getString("supplier_name"));
             supplier_list.add(supplier);
         }
+        connection.close();
         return supplier_list;
     }
 }

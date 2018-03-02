@@ -52,6 +52,8 @@ public class UOBDAOImpl implements UOBDAO {
         uob.setPo_number(rs.getString("po_number"));
         uob.setDirect_dc(rs.getString("direct_dc"));
         uob.setRemark(rs.getString("remark"));
+
+        connection.close();
         return uob;
     }
 }

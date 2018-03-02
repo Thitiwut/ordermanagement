@@ -20,6 +20,8 @@ public class ProductController extends HttpServlet {
             HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
         PrintWriter out = response.getWriter();
         out.print(postHandler(request));
     }
@@ -29,6 +31,8 @@ public class ProductController extends HttpServlet {
             HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setContentType("application/json;charset=utf-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET");
         PrintWriter out = response.getWriter();
         out.print(getHandler(request));
     }

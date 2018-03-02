@@ -91,6 +91,8 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
             purchaseOrder.setExpect_delivery_date(rs.getString("expect_delivery_date"));
             purchaseOrder.setStatus(rs.getString("status"));
         }
+
+        connection.close();
         return purchaseOrder;
     }
 
@@ -118,6 +120,7 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
             ((POProduct) product).setOrder_amount(rs.getDouble("order_amount"));
             product_list.add(product);
         }
+        connection.close();
         return product_list;
     }
 }
