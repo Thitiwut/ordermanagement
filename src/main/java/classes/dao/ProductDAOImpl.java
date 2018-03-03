@@ -23,12 +23,15 @@ public class ProductDAOImpl implements ProductDAO{
         Connection connection = datasource.getConnection();
         if(product_name != null && product_type != null){
             PreparedStatement statement = connection.prepareStatement
-                    ("INSERT INTO `OrderManagementDB`.`product` (`product_name`, `product_type`) VALUES (?, ?);" +
-                            "INSERT INTO `OrderManagementDB`.`price` (`product_id`, `supplier_id`) VALUES (LAST_INSERT_ID(), ?);");
-            statement.setString(1,product_name);
+                    ("START TRANSACTION;" +
+                            "INSERT INTO `OrderManagementDB`.`product` (`product_name`, `product_type`) VALUES (?, ?);" +
+                            "SET @product_key = LAST_INSERT_ID();" +
+                            "INSERT INTO `OrderManagementDB`.`price` (`product_id`, `supplier_id`) VALUES (@product_key, ?);" +
+                    "COMMIT;");
+            statement.setString(1, product_name);
             statement.setString(2,"regular");
             statement.setInt(3,supplier_id);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.close();
             return true;
         }else return false;
@@ -38,7 +41,7 @@ public class ProductDAOImpl implements ProductDAO{
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("DELETE FROM `OrderManagementDB`.`product` WHERE `product_id`=?;");
         statement.setInt(1,product_id);
-        statement.executeQuery();
+        statement.executeUpdate();
         connection.close();
         return true;
     }
@@ -50,7 +53,7 @@ public class ProductDAOImpl implements ProductDAO{
                     "UPDATE `OrderManagementDB`.`product` SET `product_name`=? WHERE `product_id`=?;");
             statement.setString(1,new_product_name);
             statement.setInt(2,product_id);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.close();
             return true;
         }else connection.close(); return false;
@@ -58,26 +61,27 @@ public class ProductDAOImpl implements ProductDAO{
 
     public Product GetProductByName(String product_name) throws NamingException, SQLException{
         Connection connection = datasource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT FROM OrderManagementDB.product WHERE product_name=?;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `OrderManagementDB`.product WHERE `product_name` = ?;");
         statement.setString(1, product_name);
 
         ResultSet rs = statement.executeQuery();
-        rs.next();
 
-        Product product = new Product();
-        product.setProduct_id(rs.getInt("product_id"));
-        product.setProduct_name(rs.getString("product_name"));
-        product.setProduct_number(rs.getString("product_number"));
-        product.setProduct_type(rs.getString("product_type"));
-        product.setPackage_component(rs.getString("package_component"));
-
+        Product product = null;
+        if(rs.next()) {
+            product = new Product();
+            product.setProduct_id(rs.getInt("product_id"));
+            product.setProduct_name(rs.getString("product_name"));
+            product.setProduct_number(rs.getString("product_number"));
+            product.setProduct_type(rs.getString("product_type"));
+            product.setPackage_component(rs.getString("package_component"));
+        }
         connection.close();
         return product;
     }
 
     public Product GetProductByID(int product_id) throws NamingException, SQLException{
         Connection connection = datasource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT FROM OrderManagementDB.product WHERE product_id=?;");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM OrderManagementDB.product WHERE product_id=?;");
         statement.setInt(1, product_id);
         ResultSet rs = statement.executeQuery();
         rs.next();

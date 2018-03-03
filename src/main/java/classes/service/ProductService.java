@@ -32,7 +32,7 @@ public class ProductService {
             } else return "Failed";
         }catch (SQLException e){
             e.printStackTrace();
-            return "SQL_Error";
+            return "SQL_Error|"+e.getMessage();
         }catch (Exception e){
             e.printStackTrace();
             return "Internal_Error";
