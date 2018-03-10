@@ -2,6 +2,7 @@ package controller;
 
 import classes.service.SupplierService;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,16 @@ import java.io.PrintWriter;
 @WebServlet(name = "SupplierController", urlPatterns = "/supplier")
 public class SupplierController extends HttpServlet {
     SupplierService supService = new SupplierService();
+
+    //Preflight
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
 
     @Override
     protected void doPost(

@@ -100,15 +100,28 @@ public class ProductDAOImpl implements ProductDAO{
 
     public ArrayList<Product> GetAllProduct(int supplier_id) throws NamingException, SQLException{
         Connection connection = datasource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT OrderManagementDB.product.product_id," +
-                "OrderManagementDB.product.product_name," +
-                "OrderManagementDB.product.product_number," +
-                "OrderManagementDB.product.product_type," +
-                "OrderManagementDB.product.package_component," +
-                "OrderManagementDB.price.price " +
-                "FROM OrderManagementDB.product " +
-                "LEFT JOIN OrderManagementDB.price ON OrderManagementDB.product.product_id = OrderManagementDB.price.product_id " +
-                "WHERE supplier_id = ?;");
+        PreparedStatement statement = connection.prepareStatement("SELECT \n" +
+                "        OrderManagementDB.`product`.`product_id` AS product_id,\n" +
+                "        OrderManagementDB.`product`.`product_name` AS product_name,\n" +
+                "        OrderManagementDB.`product`.`product_number` AS product_number,\n" +
+                "        OrderManagementDB.`product`.`product_type` AS product_type,\n" +
+                "        OrderManagementDB.`product`.`package_component` AS package_component,\n" +
+                "        IFNULL(ANY_VALUE(OrderManagementDB.`price`.`price`),\n" +
+                "                0) AS price,\n" +
+                "\t\tOrderManagementDB.`price`.supplier_id AS supplier_id\n" +
+                "    FROM\n" +
+                "        (OrderManagementDB.`product`\n" +
+                "        LEFT JOIN OrderManagementDB.`price` ON ((OrderManagementDB.`product`.`product_id` = OrderManagementDB.`price`.`product_id`)))\n" +
+                "    WHERE\n" +
+                "        OrderManagementDB.`price`.`price_id` IN (SELECT \n" +
+                "                MAX(OrderManagementDB.`price`.`price_id`) AS price_id\n" +
+                "            FROM\n" +
+                "                OrderManagementDB.`price`\n" +
+                "            GROUP BY OrderManagementDB.`price`.`product_id`\n" +
+                "            ORDER BY OrderManagementDB.`price`.`product_id` DESC)\n" +
+                "            AND supplier_id = ?\n" +
+                "    GROUP BY OrderManagementDB.`price`.`product_id`\n" +
+                "    ORDER BY OrderManagementDB.`price`.`product_id` ASC");
         statement.setInt(1, supplier_id);
         ResultSet rs = statement.executeQuery();
 

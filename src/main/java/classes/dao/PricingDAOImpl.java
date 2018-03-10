@@ -24,7 +24,7 @@ public class PricingDAOImpl implements PricingDAO{
             statement.setInt(2,supplier_id);
             statement.setString(3,active_date);
             statement.setDouble(4,price);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.close();
             return true;
         }else return false;
