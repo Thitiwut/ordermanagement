@@ -7,10 +7,7 @@ import classes.model.PurchaseOrder;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
@@ -21,17 +18,18 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
         this.datasource = datasource ;
     }
 
-    public int InsertPurchaseOrder(int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws NamingException, SQLException {
+    public int InsertPurchaseOrder(int po_number, int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws NamingException, SQLException {
         Connection connection = datasource.getConnection();
         if(order_date != null && expect_delivery_date != null && status != null){
             PreparedStatement statement = connection.prepareStatement("INSERT INTO `OrderManagementDB`.`purchase_order` " +
-                    "(`supplier_id`, `branch_id`,`expect_delivery_date`, `status`) " +
-                    "VALUES (?, ?, ?, ?);");
-            statement.setInt(1,supplier_id);
-            statement.setInt(2,customer_branch_id);
-            statement.setString(3,expect_delivery_date);
-            statement.setString(4,status);
-            statement.executeQuery();
+                    "(`po_number`, `supplier_id`, `branch_id`,`expect_delivery_date`, `status`) " +
+                    "VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS );
+            statement.setInt(1,po_number);
+            statement.setInt(2,supplier_id);
+            statement.setInt(3,customer_branch_id);
+            statement.setString(4,expect_delivery_date);
+            statement.setString(5,status);
+            statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             int inserted_key = rs.getInt(1);
@@ -51,7 +49,7 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
             statement.setInt(2,customer_branch_id);
             statement.setString(3,expect_delivery_date);
             statement.setInt(4,po_id);
-            statement.executeQuery();
+            statement.executeUpdate();
             connection.close();
             return true;
         }else return false;
@@ -61,7 +59,7 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("DELETE FROM `OrderManagementDB`.`purchase_order` WHERE `po_id`=?;");
         statement.setInt(1,po_id);
-        statement.executeQuery();
+        statement.executeUpdate();
         connection.close();
         return true;
     }
@@ -69,13 +67,13 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
     public PurchaseOrder GetPurchaseOrderByNumber(String po_number) throws NamingException, SQLException {
         Connection connection = datasource.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT OrderManagementDB.purchase_order.po_id, OrderManagementDB.purchase_order.supplier_id,\n" +
-                "OrderManagementDB.supplier.supplier_name, CONCAT(OrderManagementDB.branch.branch_number,\".\",OrderManagementDB.purchase_order.po_id) AS po_number,\n" +
+                "OrderManagementDB.supplier.supplier_name, CONCAT(OrderManagementDB.branch.branch_number,\".\",OrderManagementDB.purchase_order.po_number) AS po_number,\n" +
                 "OrderManagementDB.purchase_order.branch_id, OrderManagementDB.branch.branch_name, OrderManagementDB.purchase_order.order_date,\n" +
                 "OrderManagementDB.purchase_order.expect_delivery_date, OrderManagementDB.purchase_order.status\n" +
                 "FROM OrderManagementDB.purchase_order\n" +
                 "LEFT JOIN OrderManagementDB.supplier ON OrderManagementDB.purchase_order.supplier_id = OrderManagementDB.supplier.supplier_id\n" +
                 "LEFT JOIN OrderManagementDB.branch ON OrderManagementDB.purchase_order.branch_id = OrderManagementDB.branch.branch_id\n" +
-                "WHERE CONCAT(OrderManagementDB.branch.branch_number,\".\",OrderManagementDB.purchase_order.po_id) = ?;");
+                "WHERE OrderManagementDB.purchase_order.po_number = ?;");
         statement.setString(1,po_number);
         ResultSet rs = statement.executeQuery();
 

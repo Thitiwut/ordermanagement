@@ -30,7 +30,7 @@ class PurchaseOrderServiceTest {
     void AddNewPurchaseOrderSuccess(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPurchaseOrderDAO(new MockPurchaseOrderDAO());
-        String result = purchaseOrderService.AddNewPurchaseOrder(1, 1, "11/11/2018", "11/11/2018", "Pending");
+        String result = purchaseOrderService.AddNewPurchaseOrder(123456, 1, 1, "11/11/2018", "11/11/2018", "Pending");
         assertEquals("{\"status\":\"Success\",\"inserted_id\":\""+1+"\",\"action\":\"new_purchase_order\"}", result);
     }
 
@@ -38,7 +38,7 @@ class PurchaseOrderServiceTest {
     void AddNewPurchaseOrderNotSuccessUnhandledInternalError(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPurchaseOrderDAO(new MockPurchaseOrderDAO());
-        String result = purchaseOrderService.AddNewPurchaseOrder(1, 1, "11/11/2018", "11/11/2018", "CAUSE_ERROR");
+        String result = purchaseOrderService.AddNewPurchaseOrder(123456,1, 1, "11/11/2018", "11/11/2018", "CAUSE_ERROR");
         assertEquals("{\"status\":\"Internal_Error\",\"action\":\"new_purchase_order\"}", result);
     }
 
@@ -46,7 +46,7 @@ class PurchaseOrderServiceTest {
     void AddNewPurchaseOrderNotSuccessUnhandledSQLError(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPurchaseOrderDAO(new MockPurchaseOrderDAO());
-        String result = purchaseOrderService.AddNewPurchaseOrder(1, 1, "11/11/2018", "11/11/2018", "CAUSE_SQLERROR");
+        String result = purchaseOrderService.AddNewPurchaseOrder(123456,1, 1, "11/11/2018", "11/11/2018", "CAUSE_SQLERROR");
         assertEquals("{\"status\":\"SQL_Error\",\"action\":\"new_purchase_order\"}", result);
     }
 
@@ -110,7 +110,7 @@ class PurchaseOrderServiceTest {
     void AddNewPOProductToPurchaseOrderSuccess(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPoProductDAO(new MockPOProductDAO());
-        String result = purchaseOrderService.AddProductToPurchaseOrder(1, 1, 1.00,100.00);
+        String result = purchaseOrderService.AddProductToPurchaseOrder(1, 1, 1,100.00);
         assertEquals("{\"status\":\"Success\",\"inserted_id\":\""+1+"\",\"action\":\"add_purchase_order_product\"}", result);
     }
 
@@ -118,7 +118,7 @@ class PurchaseOrderServiceTest {
     void AddNewPOProductToPurchaseOrderNotSuccessUnhandledInternalError(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPoProductDAO(new MockPOProductDAO());
-        String result = purchaseOrderService.AddProductToPurchaseOrder(9999, 1, 1.00,100.00);
+        String result = purchaseOrderService.AddProductToPurchaseOrder(9999, 1, 1,100.00);
         assertEquals("{\"status\":\"Internal_Error\",\"action\":\"add_purchase_order_product\"}", result);
     }
 
@@ -126,7 +126,7 @@ class PurchaseOrderServiceTest {
     void AddNewPOProductToPurchaseOrderNotSuccessUnhandledSQLError(){
         PurchaseOrderService purchaseOrderService = new PurchaseOrderService();
         purchaseOrderService.setPoProductDAO(new MockPOProductDAO());
-        String result = purchaseOrderService.AddProductToPurchaseOrder(9998, 1, 1.00,100.00);
+        String result = purchaseOrderService.AddProductToPurchaseOrder(9998, 1, 1,100.00);
         assertEquals("{\"status\":\"SQL_Error\",\"action\":\"add_purchase_order_product\"}", result);
     }
 
@@ -252,7 +252,7 @@ class PurchaseOrderServiceTest {
 
     /* Mock Object */
     private class MockPurchaseOrderDAO implements PurchaseOrderDAO{
-        public int InsertPurchaseOrder(int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws SQLException {
+        public int InsertPurchaseOrder(int po_number, int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) throws SQLException {
             if(status == "CAUSE_ERROR"){
                 int[] test_array = null;
                 int test_value = test_array[1] + test_array[1];
@@ -328,6 +328,11 @@ class PurchaseOrderServiceTest {
             if(product_id == 9998) throw new SQLException();
 
             return 1;
+        }
+
+        @Override
+        public int InsertPOProduct(int product_id, int po_id, int order_amount, double order_price) throws NamingException, SQLException {
+            return 0;
         }
 
         public boolean DeletePOProduct(int po_product_id) throws SQLException {

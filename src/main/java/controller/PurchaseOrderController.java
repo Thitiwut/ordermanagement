@@ -57,6 +57,7 @@ public class PurchaseOrderController extends HttpServlet {
         switch (action) {
             case "new_purchase_order":
                 serviceResult = poService.AddNewPurchaseOrder(
+                        (Integer)map.get("po_number"),
                         (Integer)map.get("supplier_id"),
                         (Integer)map.get("branch_id"),
                         (String)map.get("order_date"),
@@ -68,7 +69,7 @@ public class PurchaseOrderController extends HttpServlet {
                 serviceResult = poService.AddProductToPurchaseOrder(
                         (Integer)map.get("product_id"),
                         (Integer)map.get("po_id"),
-                        (Double)map.get("order_amount"),
+                        (Integer) map.get("order_amount"),
                         (Double)map.get("order_price"));
                 responseBody = serviceResult;
                 return responseBody;
