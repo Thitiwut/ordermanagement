@@ -70,7 +70,7 @@ public class PurchaseOrderController extends HttpServlet {
                         (Integer)map.get("product_id"),
                         (Integer)map.get("po_id"),
                         (Integer) map.get("order_amount"),
-                        (Double)map.get("order_price"));
+                        Double.parseDouble((String)map.get("order_price")));
                 responseBody = serviceResult;
                 return responseBody;
             case "cancel_purchase_order":

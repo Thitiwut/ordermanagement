@@ -82,7 +82,7 @@ public class ProductController extends HttpServlet {
                         (Integer)map.get("product_id"),
                         (Integer)map.get("supplier_id"),
                         (String)map.get("active_date"),
-                        (Double)map.get("price"));
+                        Double.parseDouble((String)map.get("price")));
                 responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"set_product_price\"}";
                 return responseBody;
                 default:
