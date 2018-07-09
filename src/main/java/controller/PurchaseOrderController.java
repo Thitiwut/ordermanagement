@@ -111,6 +111,14 @@ public class PurchaseOrderController extends HttpServlet {
                         request.getParameter("po_number"));
                 responseBody = serviceResult;
                 return responseBody;
+            case "get_purchase_order_list":
+                serviceResult = poService.GetPurchaseOrderList(
+                        request.getParameter("po_number"),
+                        request.getParameter("status"),
+                        request.getParameter("supplier_name"),
+                        request.getParameter("branch_name"));
+                responseBody = serviceResult;
+                return responseBody;
             default:
                 return "{\"status\":\"unhandle\"}";
         }

@@ -314,6 +314,11 @@ class PurchaseOrderServiceTest {
             product_list.add(new POProduct(1,1, "ส้มสายน้ำผึ้ง#4", "175475", "Regular", 150.00, 10));
             return product_list;
         }
+
+        @Override
+        public ArrayList<PurchaseOrder> GetPurchaseOrderList(String po_number, String status, String supplier_name, String branch_number) throws NamingException, SQLException {
+            return null;
+        }
     }
 
     private class MockPOProductDAO implements POProductDAO{

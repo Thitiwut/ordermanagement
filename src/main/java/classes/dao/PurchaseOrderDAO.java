@@ -13,4 +13,5 @@ public interface PurchaseOrderDAO {
     boolean DeletePurchaseOrder(int po_id) throws NamingException, SQLException;
     PurchaseOrder GetPurchaseOrderByNumber(String po_number) throws NamingException, SQLException;
     ArrayList<Product> GetPurchaseOrderProductsByPOID(int po_id) throws NamingException, SQLException;
+    ArrayList<PurchaseOrder> GetPurchaseOrderList(String po_number, String status, String supplier_name, String branch_number) throws NamingException, SQLException;
 }

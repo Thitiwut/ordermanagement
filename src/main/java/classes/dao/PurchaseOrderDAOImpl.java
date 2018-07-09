@@ -121,4 +121,30 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
         connection.close();
         return product_list;
     }
+
+    public ArrayList<PurchaseOrder> GetPurchaseOrderList(String po_number, String status, String supplier_name, String branch_number) throws NamingException, SQLException {
+        Connection connection = datasource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT CONCAT(OrderManagementDB.branch.branch_number,\".\",OrderManagementDB.purchase_order.po_number) AS po_number, status, supplier_name, branch_name \n" +
+                "FROM OrderManagementDB.purchase_order \n" +
+                "LEFT JOIN OrderManagementDB.supplier ON OrderManagementDB.purchase_order.supplier_id = OrderManagementDB.supplier.supplier_id \n" +
+                "LEFT JOIN OrderManagementDB.branch ON OrderManagementDB.purchase_order.branch_id = OrderManagementDB.branch.branch_id \n" +
+                "WHERE CONCAT(OrderManagementDB.branch.branch_number,\".\",OrderManagementDB.purchase_order.po_number) LIKE ? and status LIKE ? and supplier_name LIKE ? and branch_name LIKE ?");
+        statement.setString(1, "%" + po_number + "%");
+        statement.setString(2,"%" + status + "%");
+        statement.setString(3,"%" + supplier_name + "%");
+        statement.setString(4, "%" + branch_number + "%");
+        ResultSet rs = statement.executeQuery();
+
+        ArrayList<PurchaseOrder> purchaseOrderList = new ArrayList<>();
+        while(rs.next()){
+            PurchaseOrder po = new PurchaseOrder();
+            po.setPo_number(rs.getString("po_number"));
+            po.setStatus(rs.getString("status"));
+            po.setSupplier_name(rs.getString("supplier_name"));
+            po.setCustomer_branch_name(rs.getString("branch_name"));
+            purchaseOrderList.add(po);
+        }
+        connection.close();
+        return purchaseOrderList;
+    }
 }

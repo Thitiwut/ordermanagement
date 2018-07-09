@@ -183,4 +183,19 @@ public class PurchaseOrderService {
             return "Internal_Error";
         }
     }
+
+    public String GetPurchaseOrderList(String po_number, String status, String supplier_name, String branch_number){
+            try {
+                ArrayList<PurchaseOrder> purchaseOrderList = purchaseOrderDAO.GetPurchaseOrderList(po_number, status, supplier_name, branch_number);
+                Gson gson = new Gson();
+                String json_string = gson.toJson(purchaseOrderList);
+                return json_string;
+            }catch (SQLException e){
+                e.printStackTrace();
+                return "SQL_Error";
+            }catch (Exception e){
+                e.printStackTrace();
+                return "Internal_Error";
+            }
+    }
 }
