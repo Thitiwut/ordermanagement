@@ -89,4 +89,8 @@ public class PurchaseOrder {
     public void setPo_product(ArrayList<Product> po_product) {
         this.po_product = po_product;
     }
+
+    public ArrayList<Product> getPo_product() {
+        return po_product;
+    }
 }

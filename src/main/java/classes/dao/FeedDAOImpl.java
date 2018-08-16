@@ -15,8 +15,8 @@ public class FeedDAOImpl implements FeedDAO {
 
     private static DataSource datasource;
 
-    public FeedDAOImpl(DataSource datasource){
-        this.datasource = datasource ;
+    public FeedDAOImpl(DataSource datasource) {
+        this.datasource = datasource;
     }
 
     @Override
@@ -30,29 +30,29 @@ public class FeedDAOImpl implements FeedDAO {
         ResultSet rs = statement.executeQuery();
 
         ArrayList feed_list = new ArrayList<Feed>();
-        while(rs.next()){
+        while (rs.next()) {
             Feed feed = new Feed();
             feed.setDate("แจ้งเตือน");
             feed.setExtraText("ครบกำหนดวันจัดส่งในวันที่  " + rs.getDate("expect_delivery_date").toString());
             feed.setIcon("calendar alternate outline");
             String po_number = rs.getString("po_number");
-            feed.setSummary("ใบสั่งซื้อเลขที่|"+po_number+"|ใกล้ครบกำหนดวันจัดส่ง !");
+            feed.setSummary("ใบสั่งซื้อเลขที่|" + po_number + "|ใกล้ครบกำหนดวันจัดส่ง !");
             feed.setAction("alert");
             feed_list.add(feed);
         }
 
         statement = connection.prepareStatement("SELECT * FROM OrderManagementDB.feed ORDER BY update_timestamp DESC LIMIT 10;");
         rs = statement.executeQuery();
-        while(rs.next()){
+        while (rs.next()) {
             Feed feed = new Feed();
             PrettyTime prettyTime = new PrettyTime();
-            feed.setDate(prettyTime.format(rs.getDate("update_timestamp")));
+            feed.setDate(prettyTime.format(rs.getTimestamp("update_timestamp")));
             feed.setIcon(getIconForAction(rs.getString("feed_action")));
             feed.setSummary(getSummaryForAction(rs.getString("feed_action"),
                     rs.getString("feed_po_number"),
                     rs.getString("feed_product"),
                     rs.getString("feed_supplier")
-                    ));
+            ));
             feed.setAction(rs.getString("feed_action"));
             feed_list.add(feed);
         }
@@ -60,7 +60,21 @@ public class FeedDAOImpl implements FeedDAO {
         return feed_list;
     }
 
-    private String getIconForAction(String action){
+    @Override
+    public boolean insertNewFeed(String feed_action, String feed_po_number, String feed_product, String feed_supplier) throws SQLException {
+        Connection connection = datasource.getConnection();
+        PreparedStatement statement = connection.prepareStatement
+                ("INSERT INTO `OrderManagementDB`.`feed` (`feed_action`, `feed_po_number`, `feed_product`, `feed_supplier`) VALUES (?,?,?,?);");
+        statement.setString(1, feed_action);
+        statement.setString(2, feed_po_number);
+        statement.setString(3, feed_product);
+        statement.setString(4, feed_supplier);
+        statement.executeUpdate();
+        connection.close();
+        return true;
+    }
+
+    private String getIconForAction(String action) {
         switch (action) {
             case "po_added":
                 return "file alternate";
@@ -78,18 +92,18 @@ public class FeedDAOImpl implements FeedDAO {
         }
     }
 
-    private String getSummaryForAction(String action, String po_number, String product, String supplier){
+    private String getSummaryForAction(String action, String po_number, String product, String supplier) {
         switch (action) {
             case "po_added":
-                return "ใบสั่งซื้อเลขที่|"+po_number+"|ถูกเพิ่มแล้ว";
+                return "ใบสั่งซื้อเลขที่|" + po_number + "|ถูกเพิ่มแล้ว";
             case "product_added":
-                return "สินค้า|"+product+"|supplier|"+supplier+"|ถูกเพิ่มแล้ว";
+                return "สินค้า|" + product + "|supplier|" + supplier + "|ถูกเพิ่มแล้ว";
             case "po_delivered":
-                return "ใบสั่งซื้อเลขที่|"+po_number+"|ถูกจัดส่งแล้ว";
+                return "ใบสั่งซื้อเลขที่|" + po_number + "|ถูกจัดส่งแล้ว";
             case "po_edited":
-                return "ใบสั่งซื้อเลขที่|"+po_number+"|ถูกแก้ไขแล้ว";
+                return "ใบสั่งซื้อเลขที่|" + po_number + "|ถูกแก้ไขแล้ว";
             case "po_cancel":
-                return "ใบสั่งซื้อเลขที่|"+po_number+"|ถูกยกเลิกแล้ว";
+                return "ใบสั่งซื้อเลขที่|" + po_number + "|ถูกยกเลิกแล้ว";
             default:
                 return "-";
         }

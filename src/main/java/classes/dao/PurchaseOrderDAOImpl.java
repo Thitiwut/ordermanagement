@@ -147,4 +147,17 @@ public class PurchaseOrderDAOImpl implements PurchaseOrderDAO {
         connection.close();
         return purchaseOrderList;
     }
+
+    @Override
+    public boolean UpdatePOStatus(Integer po_id, String status) throws NamingException, SQLException {
+        Connection connection = datasource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("UPDATE `OrderManagementDB`.`purchase_order` " +
+                    "SET `status`= ? " +
+                    "WHERE `po_id`= ?;");
+            statement.setString(1,status);
+            statement.setInt(2,po_id);
+            statement.executeUpdate();
+            connection.close();
+            return true;
+    }
 }

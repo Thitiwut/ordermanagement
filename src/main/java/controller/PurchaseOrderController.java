@@ -96,6 +96,13 @@ public class PurchaseOrderController extends HttpServlet {
                         (String)map.get("po_number"));
                 responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"enter_uob_doc\"}";
                 return responseBody;
+            case "update_status":
+                serviceResult = poService.UpdateStatus(
+                        (Integer)map.get("po_id"),
+                        (String)map.get("status")
+                );
+                responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"update_status\"}";
+                return responseBody;
             default:
                 return "{\"status\":\"unhandle\"}";
         }

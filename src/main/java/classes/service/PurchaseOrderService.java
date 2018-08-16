@@ -198,4 +198,17 @@ public class PurchaseOrderService {
                 return "Internal_Error";
             }
     }
+
+    public String UpdateStatus(Integer po_id, String status) {
+        try {
+            purchaseOrderDAO.UpdatePOStatus(po_id, status);
+            return "Success";
+        }catch (SQLException e){
+            e.printStackTrace();
+            return "SQL_Error";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Internal_Error";
+        }
+    }
 }

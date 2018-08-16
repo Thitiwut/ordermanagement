@@ -125,7 +125,8 @@ public class ProductDAOImpl implements ProductDAO{
         statement.setInt(1, supplier_id);
         ResultSet rs = statement.executeQuery();
 
-        ArrayList product_list = new ArrayList<Product>();
+        ArrayList<Integer> product_id_list = new ArrayList<>();
+        ArrayList<Product> product_list = new ArrayList<>();
         while(rs.next()){
             Product product = new Product();
             product.setProduct_id(rs.getInt("product_id"));
@@ -133,10 +134,21 @@ public class ProductDAOImpl implements ProductDAO{
             product.setProduct_number(rs.getString("product_number"));
             product.setProduct_type(rs.getString("product_type"));
             product.setPackage_component(rs.getString("package_component"));
-            product.setPrice(rs.getDouble("price"));
+
+            PreparedStatement statement2 = connection.prepareStatement( "SELECT OrderManagementDB.`price`.`price` FROM OrderManagementDB.price \n" +
+                            "WHERE product_id = ? \n" +
+                            "ORDER BY ABS( DATEDIFF( active_date, NOW() ) ) LIMIT 1");
+            statement2.setInt(1, rs.getInt("product_id"));
+            ResultSet rs2 = statement2.executeQuery();
+            rs2.next();
+            product.setPrice(rs2.getDouble("price"));
             product_list.add(product);
+            statement2.close();
+            rs2.close();
         }
 
+        rs.close();
+        statement.close();
         connection.close();
         return product_list;
     }

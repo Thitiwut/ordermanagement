@@ -319,6 +319,11 @@ class PurchaseOrderServiceTest {
         public ArrayList<PurchaseOrder> GetPurchaseOrderList(String po_number, String status, String supplier_name, String branch_number) throws NamingException, SQLException {
             return null;
         }
+
+        @Override
+        public boolean UpdatePOStatus(Integer po_id, String status) throws NamingException, SQLException {
+            return false;
+        }
     }
 
     private class MockPOProductDAO implements POProductDAO{

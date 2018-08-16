@@ -1,5 +1,6 @@
 package controller;
 
+import classes.object.RequestBodyParser;
 import classes.service.BranchService;
 import classes.service.FeedService;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 @WebServlet(name = "FeedController", urlPatterns = "/feed")
 public class FeedController extends HttpServlet {
@@ -48,10 +50,20 @@ public class FeedController extends HttpServlet {
     }
 
     private String postHandler(HttpServletRequest request){
+        RequestBodyParser rbp = new RequestBodyParser();
+        HashMap<String,Object> map = rbp.JSONBodyToMap(request);
         String serviceResult;
-        String action = request.getParameter("action");
+        String action = map.get("action").toString();
         String responseBody;
         switch (action) {
+            case "add_feed":
+                serviceResult = feedService.AddNewFeed(
+                        (String)map.get("feed_action"),
+                        (String)map.get("feed_po_number"),
+                        (String)map.get("feed_product"),
+                        (String)map.get("feed_supplier" ));
+                responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"add_feed\"}";
+                return responseBody;
             default:
                 return "{\"status\":\"unhandle\"}";
         }
