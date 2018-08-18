@@ -1,6 +1,6 @@
 <Context>
     <Resource name="OrderManagementDB" type="javax.sql.DataSource"
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
-              username="root" password="r@@tmysql9iSuS" driverClassName="com.mysql.jdbc.Driver"
+              username="root" password="ordermysql9iSuS" driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://localhost:3306?allowMultiQueries=true" connectionProperties="useUnicode=yes;characterEncoding=utf8;"/>
 </Context>
