@@ -27,9 +27,9 @@ public class PurchaseOrderService {
         this.uobDAO = uobDAO;
     }
 
-    public String AddNewPurchaseOrder(int po_number, int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status) {
+    public String AddNewPurchaseOrder(int po_number, int supplier_id, int customer_branch_id, String order_date, String expect_delivery_date, String status , String user) {
         try {
-            int insertedKey = purchaseOrderDAO.InsertPurchaseOrder(po_number, supplier_id, customer_branch_id, order_date, expect_delivery_date, status);
+            int insertedKey = purchaseOrderDAO.InsertPurchaseOrder(po_number, supplier_id, customer_branch_id, order_date, expect_delivery_date, status , user);
             if(insertedKey != 0){
                 return "{\"status\":\"Success\",\"inserted_id\":\""+insertedKey+"\",\"action\":\"new_purchase_order\"}";
             }else return "{\"status\":\"Failed\",\"action\":\"new_purchase_order\"}";
@@ -199,9 +199,9 @@ public class PurchaseOrderService {
             }
     }
 
-    public String UpdateStatus(Integer po_id, String status) {
+    public String UpdateStatus(Integer po_id, String status, String user) {
         try {
-            purchaseOrderDAO.UpdatePOStatus(po_id, status);
+            purchaseOrderDAO.UpdatePOStatus(po_id, status, user);
             return "Success";
         }catch (SQLException e){
             e.printStackTrace();

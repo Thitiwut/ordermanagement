@@ -13,6 +13,8 @@ public class PurchaseOrder {
     private String expect_delivery_date;
     private String status;
     private ArrayList<Product> po_product;
+    private String last_mnt_user;
+    private String create_user;
 
     public int getPo_id() {
         return po_id;
@@ -92,5 +94,21 @@ public class PurchaseOrder {
 
     public ArrayList<Product> getPo_product() {
         return po_product;
+    }
+
+    public String getLast_mnt_user() {
+        return last_mnt_user;
+    }
+
+    public void setLast_mnt_user(String last_mnt_user) {
+        this.last_mnt_user = last_mnt_user;
+    }
+
+    public String getCreate_user() {
+        return create_user;
+    }
+
+    public void setCreate_user(String create_user) {
+        this.create_user = create_user;
     }
 }

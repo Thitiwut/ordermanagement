@@ -19,10 +19,29 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class PDFCreator {
+    private static PDFConstants constants = new PDFConstants();
     private static String FILE_PATH = "/var/wprod/temp/file_pdf_temp_";
     private static String FONT_PATH = "/var/font/tahoma.ttf";
+    private String FULLNAME = "";
+    private String ADDRESS_1 = "";
+    private String ADDRESS_2 = "";
+    private String ADDRESS_3 = "";
+    private String CONTACT = "";
 
     public String createPurchaseOrderPDF(PurchaseOrder purchaseOrder) throws IOException {
+        if(purchaseOrder.getCustomer_branch_name().equals("วังน้อย")){
+            this.FULLNAME = constants.WN_FULLNAME;
+            this.ADDRESS_1 = constants.WN_ADDRESS_1;
+            this.ADDRESS_2 = constants.WN_ADDRESS_2;
+            this.ADDRESS_3 = constants.WN_ADDRESS_3;
+            this.CONTACT = constants.WN_CONTACT;
+        }else if(purchaseOrder.getCustomer_branch_name().equals("มหาชัย")){
+            this.FULLNAME = constants.MC_FULLNAME;
+            this.ADDRESS_1 = constants.MC_ADDRESS_1;
+            this.ADDRESS_2 = constants.MC_ADDRESS_2;
+            this.ADDRESS_3 = constants.MC_ADDRESS_3;
+            this.CONTACT = constants.MC_CONTACT;
+        }
         PDPage myPage = new PDPage(PDRectangle.A4);
         PDDocument mainDocument = new PDDocument();
         PDFont font = PDType0Font.load(mainDocument, new File(FONT_PATH));
@@ -85,66 +104,36 @@ public class PDFCreator {
         contentStream.drawString(purchaseOrder.getSupplier_name());
         contentStream.endText();
 
-        contentStream.beginText();
-        contentStream.setFont(font, 9);
-        contentStream.moveTextPositionByAmount(50, 715);
-        contentStream.drawString("ADD_1");
-        contentStream.endText();
-
-        contentStream.beginText();
-        contentStream.setFont(font, 9);
-        contentStream.moveTextPositionByAmount(50, 705);
-        contentStream.drawString("ADD_2");
-        contentStream.endText();
-
-        contentStream.beginText();
-        contentStream.setFont(font, 9);
-        contentStream.moveTextPositionByAmount(50, 695);
-        contentStream.drawString("ADD_3");
-        contentStream.endText();
-
-        contentStream.beginText();
-        contentStream.setFont(font, 9);
-        contentStream.moveTextPositionByAmount(50, 685);
-        contentStream.drawString("CONTACT");
-        contentStream.endText();
-
-        contentStream.beginText();
-        contentStream.setFont(font, 9);
-        contentStream.moveTextPositionByAmount(50, 675);
-        contentStream.drawString("SUP_NAME");
-        contentStream.endText();
-
         //////////////// BRANCH /////////////////////////////
 
         contentStream.beginText();
         contentStream.setFont(font, 9);
         contentStream.moveTextPositionByAmount(250, 725);
-        contentStream.drawString(purchaseOrder.getCustomer_branch_name());
+        contentStream.drawString(this.FULLNAME);
         contentStream.endText();
 
         contentStream.beginText();
         contentStream.setFont(font, 9);
         contentStream.moveTextPositionByAmount(250, 715);
-        contentStream.drawString("ADD_1");
+        contentStream.drawString(this.ADDRESS_1);
         contentStream.endText();
 
         contentStream.beginText();
         contentStream.setFont(font, 9);
         contentStream.moveTextPositionByAmount(250, 705);
-        contentStream.drawString("ADD_2");
+        contentStream.drawString(this.ADDRESS_2);
         contentStream.endText();
 
         contentStream.beginText();
         contentStream.setFont(font, 9);
         contentStream.moveTextPositionByAmount(250, 695);
-        contentStream.drawString("ADD_3");
+        contentStream.drawString(this.ADDRESS_3);
         contentStream.endText();
 
         contentStream.beginText();
         contentStream.setFont(font, 9);
         contentStream.moveTextPositionByAmount(250, 685);
-        contentStream.drawString("CONTACT");
+        contentStream.drawString("TEL: "+this.CONTACT);
         contentStream.endText();
 
         //////////////// DETAIL /////////////////////////////

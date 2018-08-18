@@ -62,7 +62,9 @@ public class PurchaseOrderController extends HttpServlet {
                         (Integer)map.get("branch_id"),
                         (String)map.get("order_date"),
                         (String)map.get("delivery_date"),
-                        (String)map.get("status"));
+                        (String)map.get("status"),
+                        (String)map.get("user")
+                        );
                 responseBody = serviceResult;
                 return responseBody;
             case "add_purchase_order_product":
@@ -99,7 +101,8 @@ public class PurchaseOrderController extends HttpServlet {
             case "update_status":
                 serviceResult = poService.UpdateStatus(
                         (Integer)map.get("po_id"),
-                        (String)map.get("status")
+                        (String)map.get("status"),
+                        (String)map.get("user")
                 );
                 responseBody = "{\"status\":\"" + serviceResult + "\",\"action\":\"update_status\"}";
                 return responseBody;

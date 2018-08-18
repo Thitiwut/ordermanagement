@@ -29,7 +29,7 @@ public class ProductDAOImpl implements ProductDAO{
                             "INSERT INTO `OrderManagementDB`.`price` (`product_id`, `supplier_id`) VALUES (@product_key, ?);" +
                     "COMMIT;");
             statement.setString(1, product_name);
-            statement.setString(2,"regular");
+            statement.setString(2,product_type);
             statement.setInt(3,supplier_id);
             statement.executeUpdate();
             connection.close();
@@ -136,8 +136,8 @@ public class ProductDAOImpl implements ProductDAO{
             product.setPackage_component(rs.getString("package_component"));
 
             PreparedStatement statement2 = connection.prepareStatement( "SELECT OrderManagementDB.`price`.`price` FROM OrderManagementDB.price \n" +
-                            "WHERE product_id = ? \n" +
-                            "ORDER BY ABS( DATEDIFF( active_date, NOW() ) ) LIMIT 1");
+                            "WHERE product_id = ? AND active_date <= now() \n" +
+                            "ORDER BY active_date DESC LIMIT 1");
             statement2.setInt(1, rs.getInt("product_id"));
             ResultSet rs2 = statement2.executeQuery();
             rs2.next();
