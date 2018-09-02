@@ -12,4 +12,6 @@ public class PDFConstants {
     public final String MC_ADDRESS_2 = "ต.กาหลง อ.เมืองสมุทรสาคร";
     public final String MC_ADDRESS_3 = "สมุทรสาคร 74000";
     public final String MC_CONTACT = "-";
+
+
 }

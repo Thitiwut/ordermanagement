@@ -21,13 +21,13 @@ public class ProductService {
 
     public void setPriceDAO(PricingDAO pricingDAO) {this.pricingDAO = pricingDAO; }
 
-    public String AddNewProduct(String product_name, String product_type, int supplier_id, double price) {
+    public String AddNewProduct(String product_name, Integer product_id, String product_type, int supplier_id, double price) {
         try {
             Product product = productDAO.GetProductByName(product_name);
             if (product != null) {
                 return "Duplicate";
             }
-            if (productDAO.InsertProduct(product_name, product_type, supplier_id, price)) {
+            if (productDAO.InsertProduct(product_name, product_id, product_type, supplier_id, price)) {
                 return "Success";
             } else return "Failed";
         }catch (SQLException e){

@@ -26,7 +26,7 @@ class ProductServiceTest {
     void AddNewProductSuccess(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("Apple", "Regular", 1, 100.00);
+        String result = productService.AddNewProduct("Apple", 1,"Regular", 1, 100.00);
         assertEquals("Success", result);
     }
 
@@ -34,7 +34,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessDuplicatedName(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("Duplicate", "Regular", 1, 100.00);
+        String result = productService.AddNewProduct("Duplicate", 1,"Regular", 1, 100.00);
         assertEquals("Duplicate", result);
     }
 
@@ -42,7 +42,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessUnhandledInternalError(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("CAUSE_ERROR", "Regular", 1, 100.00);
+        String result = productService.AddNewProduct("CAUSE_ERROR", 1,"Regular", 1, 100.00);
         assertEquals("Internal_Error", result);
     }
 
@@ -50,7 +50,7 @@ class ProductServiceTest {
     void AddNewProductNotSuccessUnhandledSQLError(){
         ProductService productService = new ProductService();
         productService.setProductDAO(new MockProductDAO());
-        String result = productService.AddNewProduct("CAUSE_SQLERROR", "Regular", 1, 100.00);
+        String result = productService.AddNewProduct("CAUSE_SQLERROR", 1,"Regular", 1, 100.00);
         assertEquals("SQL_Error", result);
     }
 
@@ -131,7 +131,7 @@ class ProductServiceTest {
     /* Mock Object */
     private class MockProductDAO implements ProductDAO{
 
-        public boolean InsertProduct(String product_name, String product_type, int supplier_id, double price) throws SQLException{
+        public boolean InsertProduct(String product_name, Integer product_id, String product_type, int supplier_id, double price) throws SQLException{
             if(product_name == "CAUSE_ERROR"){
                 int[] test_array = null;
                 int test_value = test_array[1] + test_array[1];

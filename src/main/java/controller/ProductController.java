@@ -60,6 +60,7 @@ public class ProductController extends HttpServlet {
             case "add_product":
                 serviceResult = prodService.AddNewProduct(
                         (String)map.get("product_name"),
+                        (Integer)map.get("product_id"),
                         (String)map.get("product_type"),
                         (Integer)map.get("supplier_id"),
                         0);

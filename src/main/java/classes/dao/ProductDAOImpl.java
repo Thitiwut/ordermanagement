@@ -19,18 +19,19 @@ public class ProductDAOImpl implements ProductDAO{
         this.datasource = datasource ;
     }
 
-    public boolean InsertProduct(String product_name, String product_type, int supplier_id, double price) throws NamingException,SQLException {
+    public boolean InsertProduct(String product_name, Integer product_id, String product_type, int supplier_id, double price) throws NamingException,SQLException {
         Connection connection = datasource.getConnection();
         if(product_name != null && product_type != null){
             PreparedStatement statement = connection.prepareStatement
                     ("START TRANSACTION;" +
-                            "INSERT INTO `OrderManagementDB`.`product` (`product_name`, `product_type`) VALUES (?, ?);" +
-                            "SET @product_key = LAST_INSERT_ID();" +
-                            "INSERT INTO `OrderManagementDB`.`price` (`product_id`, `supplier_id`) VALUES (@product_key, ?);" +
+                            "INSERT INTO `OrderManagementDB`.`product` (`product_name`, `product_id`, `product_type`) VALUES (?, ?, ?);" +
+                            "INSERT INTO `OrderManagementDB`.`price` (`product_id`, `supplier_id`) VALUES (?, ?);" +
                     "COMMIT;");
             statement.setString(1, product_name);
-            statement.setString(2,product_type);
-            statement.setInt(3,supplier_id);
+            statement.setInt(2, product_id);
+            statement.setString(3,product_type);
+            statement.setInt(4,product_id);
+            statement.setInt(5,supplier_id);
             statement.executeUpdate();
             connection.close();
             return true;
